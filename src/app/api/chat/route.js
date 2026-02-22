@@ -8,7 +8,7 @@ export async function POST(req) {
     const { image, mode } = await req.json();
     const model = genAI.getGenerativeModel({ model: "gemini-flash-lite-latest" });
 
-    // Definimos los nombres de las etiquetas según el modo
+    // Etiquetas para el JSON
     const etiquetas = {
       ligar: ["Suave", "Directa", "Coqueta"],
       salvar: ["Ruptura de Hielo", "Humor", "Re-conexión"],
@@ -16,17 +16,19 @@ export async function POST(req) {
     };
 
     const prompts = {
-      ligar: "Experto en seducción natural. Genera 3 mensajes cortos con flow. NO analices.",
-      salvar: "Rescate de chat. Genera 3 mensajes creativos para reabrir la charla. NO analices.",
-      inteligente: "Mente brillante. Genera 3 respuestas usando analogías de alto nivel (fractales, buffs, estrategia) pero en tono casual de chat. NO des explicaciones."
+      ligar: "Experto en carisma y coqueteo colombiano. Genera 3 mensajes cortos con flow de parche. NO analices.",
+      salvar: "Rescate de chat con ingenio colombiano. Genera 3 mensajes creativos para reabrir la charla. NO analices.",
+      inteligente: "Mente brillante pero relajada. Genera 3 respuestas usando analogías de alto nivel (estrategia, psicología) con lenguaje casual colombiano. NO des explicaciones."
     };
 
     const systemPrompt = `
-      INSTRUCCIÓN: Eres Ghostwriter AI. Tu misión es escribir mensajes exactos para enviar.
-      REGLAS:
-      1. NO analices el contexto ni des consejos.
-      2. Solo entrega frases listas para copiar y pegar.
-      3. Usa jerga de chat moderna (latina/española).
+      INSTRUCCIÓN: Eres Ghostwriter AI, experto en comunicación de Medellín/Colombia. Tu misión es escribir mensajes listos para copiar y pegar.
+      
+      REGLAS DE ORO (CRUCIAL):
+      1. PROHIBIDO usar palabras mexicanas como "chido", "wey", "padre", "no manches", "platicar".
+      2. Usa lenguaje COLOMBIANO NATURAL: "parche", "plan", "bacano", "de una", "qué nota", "parce", "veámonos", "cuadremos".
+      3. No seas forzado ni exagerado (evita el 'parce' en cada frase, busca que suene real).
+      4. Solo entrega frases listas para enviar. NO analices el contexto.
       
       ESTILO SELECCIONADO: ${prompts[mode]}
 
