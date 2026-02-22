@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-pink-500: #ec4899;
+  --color-violet-500: #8b5cf6;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+}
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  margin: 0;
+  padding: 0;
+}
