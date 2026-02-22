@@ -9,6 +9,10 @@ export default function Home() {
   const [copiadoIdx, setCopiadoIdx] = useState(null);
   const [activeMode, setActiveMode] = useState("");
   const [loadingText, setLoadingText] = useState("");
+  
+  // NUEVOS ESTADOS PARA EL DELAY
+  const [canRequest, setCanRequest] = useState(true);
+  const [timeLeft, setTimeLeft] = useState(0);
 
   const frasesPaisas = [
     "Analizando el visaje...",
@@ -45,6 +49,8 @@ export default function Home() {
 
   const analyzeChat = async (mode) => {
     if (!image) return alert("Sube una captura primero");
+    if (!canRequest) return alert(`Tranquilo fiera, espera ${timeLeft}s para la próxima vuelta.`);
+    
     setLoading(true);
     setActiveMode(mode);
     try {
@@ -57,6 +63,20 @@ export default function Home() {
       if (data.opciones) {
         setResults(data.opciones);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // ACTIVAR EL COOLDOWN DE 60 SEGUNDOS
+        setCanRequest(false);
+        setTimeLeft(60);
+        const timer = setInterval(() => {
+          setTimeLeft((prev) => {
+            if (prev <= 1) {
+              clearInterval(timer);
+              setCanRequest(true);
+              return 0;
+            }
+            return prev - 1;
+          });
+        }, 1000);
       }
     } catch (err) {
       alert("Error analizando la imagen");
@@ -148,32 +168,36 @@ export default function Home() {
 
             <div className="grid grid-cols-1 gap-3">
               <button 
+                disabled={!canRequest}
                 onClick={() => analyzeChat("ligar")} 
-                className="w-full py-5 bg-white text-black rounded-[2.5rem] font-black text-xs tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-all shadow-xl"
+                className={`w-full py-5 rounded-[2.5rem] font-black text-xs tracking-widest uppercase transition-all shadow-xl ${canRequest ? "bg-white text-black hover:scale-[1.02] active:scale-95" : "bg-zinc-800 text-zinc-500 opacity-50 cursor-not-allowed"}`}
               >
-                🔥 Modo Ligar
+                {canRequest ? "🔥 Modo Ligar" : `ESPERA (${timeLeft}s)`}
               </button>
 
               <div className="grid grid-cols-2 gap-3">
                 <button 
+                  disabled={!canRequest}
                   onClick={() => analyzeChat("salvar")} 
-                  className="py-5 bg-zinc-900 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 transition-all"
+                  className={`py-5 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase transition-all ${canRequest ? "bg-zinc-900 hover:bg-zinc-800" : "bg-zinc-900 text-zinc-600 opacity-50 cursor-not-allowed"}`}
                 >
-                   🆘 Salvar
+                  {canRequest ? "🆘 Salvar" : `(${timeLeft}s)`}
                 </button>
                 <button 
+                  disabled={!canRequest}
                   onClick={() => analyzeChat("inteligente")} 
-                  className="py-5 bg-zinc-900 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 transition-all"
+                  className={`py-5 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase transition-all ${canRequest ? "bg-zinc-900 hover:bg-zinc-800" : "bg-zinc-900 text-zinc-600 opacity-50 cursor-not-allowed"}`}
                 >
-                   🧠 Genio
+                  {canRequest ? "🧠 Genio" : `(${timeLeft}s)`}
                 </button>
               </div>
 
               <button 
+                disabled={!canRequest}
                 onClick={() => analyzeChat("romper")} 
-                className="w-full py-5 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-zinc-700 text-zinc-300 rounded-[2.5rem] font-black text-xs tracking-widest uppercase hover:border-amber-500/50 transition-all shadow-lg flex items-center justify-center gap-2"
+                className={`w-full py-5 border rounded-[2.5rem] font-black text-xs tracking-widest uppercase transition-all shadow-lg flex items-center justify-center gap-2 ${canRequest ? "bg-gradient-to-r from-zinc-900 to-zinc-800 border-zinc-700 text-zinc-300 hover:border-amber-500/50" : "bg-zinc-900 border-zinc-800 text-zinc-600 opacity-50 cursor-not-allowed"}`}
               >
-                ❄️ Romper el Hielo
+                {canRequest ? "❄️ Romper el Hielo" : `MODO RECARGANDO (${timeLeft}s)`}
               </button>
             </div>
           </div>
@@ -212,7 +236,7 @@ export default function Home() {
       </div>
 
       <footer className="mt-auto py-10 text-[9px] text-zinc-800 font-bold tracking-[0.6em] uppercase">
-        © 2026 ANTO.DEV
+        © 2026 ANTO.DEV V 3.0
       </footer>
     </main>
   );
