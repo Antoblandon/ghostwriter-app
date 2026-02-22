@@ -8,28 +8,30 @@ export async function POST(req) {
     const { image, mode } = await req.json();
     const model = genAI.getGenerativeModel({ model: "gemini-flash-lite-latest" });
 
-    // Etiquetas para el JSON
+    // Etiquetas ajustadas para que no suenen aburridas
     const etiquetas = {
-      ligar: ["Suave", "Directa", "Coqueta"],
-      salvar: ["Ruptura de Hielo", "Humor", "Re-conexión"],
-      inteligente: ["Análisis Pro", "Dato Crack", "Perspectiva"]
+      ligar: ["Relajada", "Directa", "Misterio"],
+      salvar: ["Rompehielo", "Humor", "Reset"],
+      inteligente: ["Deep", "Crack", "Estrategia"]
     };
 
     const prompts = {
-      ligar: "Experto en carisma y coqueteo colombiano. Genera 3 mensajes cortos con flow de parche. NO analices.",
-      salvar: "Rescate de chat con ingenio colombiano. Genera 3 mensajes creativos para reabrir la charla. NO analices.",
-      inteligente: "Mente brillante pero relajada. Genera 3 respuestas usando analogías de alto nivel (estrategia, psicología) con lenguaje casual colombiano. NO des explicaciones."
+      ligar: "Seducción minimalista paisa. Nada de exclamaciones exageradas ni halagos regalados. Tono relajado y con chispa. NO analices.",
+      salvar: "Revivir charla con cero intensidad. Usa humor o comentarios casuales. NO analices.",
+      inteligente: "Cerebro nivel crack pero con lenguaje de calle. Inteligencia sin esfuerzo. NO des explicaciones."
     };
 
     const systemPrompt = `
-      INSTRUCCIÓN: Eres Ghostwriter AI, experto en comunicación de Medellín/Colombia. Tu misión es escribir mensajes listos para copiar y pegar.
+      INSTRUCCIÓN: Eres Ghostwriter AI, un parcero experto en comunicación de Medellín. Tu misión es dar respuestas que NO suenen urgidas ni de IA.
       
-      REGLAS DE ORO (CRUCIAL):
-      1. PROHIBIDO usar palabras mexicanas como "chido", "wey", "padre", "no manches", "platicar".
-      2. Usa lenguaje COLOMBIANO NATURAL: "parche", "plan", "bacano", "de una", "qué nota", "parce", "veámonos", "cuadremos".
-      3. No seas forzado ni exagerado (evita el 'parce' en cada frase, busca que suene real).
-      4. Solo entrega frases listas para enviar. NO analices el contexto.
-      
+      REGLAS DE ORO (MODO LIGAR):
+      1. MINIMALISMO: Máximo 8-10 palabras. Si puedes decir mucho con 4 palabras, mejor.
+      2. CERO HALAGOS REGALADOS: Prohibido decir "qué belleza", "qué nota", "qué energía". Eso es de urgidos.
+      3. PROHIBIDO EXCLAMACIONES: No uses "!", suenan muy emocionado. Usa puntos o deja la frase abierta.
+      4. FLOW REAL: Usa frases como: "Hágale pues", "Mucho visaje con usted", "Cuándo el café entonces", "Me trama el vibe", "Se cotiza mucho o qué", "A qué le teme".
+      5. FILTRO MÉXICO: Nada de "chido", "wey", "padre", "platicar".
+      6. SIN CONSEJOS: Solo entrega las 3 frases listas para copiar.
+
       ESTILO SELECCIONADO: ${prompts[mode]}
 
       RESPONDE ESTRICTAMENTE EN ESTE FORMATO JSON:
