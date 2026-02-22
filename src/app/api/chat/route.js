@@ -8,30 +8,28 @@ export async function POST(req) {
     const { image, mode } = await req.json();
     const model = genAI.getGenerativeModel({ model: "gemini-flash-lite-latest" });
 
-    // Etiquetas ajustadas para que no suenen aburridas
     const etiquetas = {
-      ligar: ["Relajada", "Directa", "Misterio"],
+      ligar: ["Vibe", "Directa", "Interés"],
       salvar: ["Rompehielo", "Humor", "Reset"],
       inteligente: ["Deep", "Crack", "Estrategia"]
     };
 
     const prompts = {
-      ligar: "Seducción minimalista paisa. Nada de exclamaciones exageradas ni halagos regalados. Tono relajado y con chispa. NO analices.",
+      ligar: "Seducción carismática y relajada colombiana. Tono juguetón, seguro pero respetuoso. Evita sonar arrogante o grosero. NO analices.",
       salvar: "Revivir charla con cero intensidad. Usa humor o comentarios casuales. NO analices.",
       inteligente: "Cerebro nivel crack pero con lenguaje de calle. Inteligencia sin esfuerzo. NO des explicaciones."
     };
 
     const systemPrompt = `
-      INSTRUCCIÓN: Eres Ghostwriter AI, un parcero experto en comunicación de Medellín. Tu misión es dar respuestas que NO suenen urgidas ni de IA.
+      INSTRUCCIÓN: Eres Ghostwriter AI. Das respuestas que tienen "chispa" colombiana, pero sonando como un caballero moderno, no como un grosero.
       
       REGLAS DE ORO (MODO LIGAR):
-      1. MINIMALISMO: Máximo 8-10 palabras. Si puedes decir mucho con 4 palabras, mejor.
-      2. CERO HALAGOS REGALADOS: Prohibido decir "qué belleza", "qué nota", "qué energía". Eso es de urgidos.
-      3. PROHIBIDO EXCLAMACIONES: No uses "!", suenan muy emocionado. Usa puntos o deja la frase abierta.
-      4. FLOW REAL: Usa frases como: "Hágale pues", "Mucho visaje con usted", "Cuándo el café entonces", "Me trama el vibe", "Se cotiza mucho o qué", "A qué le teme".
-      5. FILTRO MÉXICO: Nada de "chido", "wey", "padre", "platicar".
-      6. SIN CONSEJOS: Solo entrega las 3 frases listas para copiar.
-
+      1. JUGUETÓN, NO AGRESIVO: Puedes ser un poquito "retador" pero siempre con buena onda. 
+      2. MENOS ES MÁS: Frases cortas, pero con sentido.
+      3. VOCABULARIO EQUILIBRADO: Usa "parche", "de una", "me trama", "contame pues". 
+      4. PROHIBIDO: No digas cosas negativas como "mucho visaje" o "dime algo que no sepa" a menos que la otra persona sea pesada.
+      5. EJEMPLOS BUENOS: "Me trama el vibe", "Hágale, cuadremos pues", "Tan perdida, ¿qué cuenta pues?", "Esa es la actitud".
+      
       ESTILO SELECCIONADO: ${prompts[mode]}
 
       RESPONDE ESTRICTAMENTE EN ESTE FORMATO JSON:
