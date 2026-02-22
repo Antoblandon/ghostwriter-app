@@ -1,5 +1,6 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Home() {
   const [image, setImage] = useState(null);
@@ -7,6 +8,32 @@ export default function Home() {
   const [results, setResults] = useState(null);
   const [copiadoIdx, setCopiadoIdx] = useState(null);
   const [activeMode, setActiveMode] = useState("");
+  const [loadingText, setLoadingText] = useState("");
+
+  const frasesPaisas = [
+    "Analizando el visaje...",
+    "Buscando la parla exacta, mijo...",
+    "Cuadrando una respuesta bien elegante...",
+    "Póngase bonito que esto va coronado...",
+    "Revisando qué dice la fufurufa/el nea...",
+    "No se me acelere, ya le saco los poderes...",
+    "Haciéndole la vuelta bien hecha, parcero...",
+    "Sacando los pasos prohibidos del chat..."
+  ];
+
+  useEffect(() => {
+    let interval;
+    if (loading) {
+      setLoadingText(frasesPaisas[0]);
+      interval = setInterval(() => {
+        setLoadingText(prev => {
+          const currentIndex = frasesPaisas.indexOf(prev);
+          return frasesPaisas[(currentIndex + 1) % frasesPaisas.length];
+        });
+      }, 1500);
+    }
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -43,7 +70,6 @@ export default function Home() {
     setTimeout(() => setCopiadoIdx(null), 2000);
   };
 
-  // Mapeo dinámico de etiquetas según el botón presionado
   const getBadgeInfo = (index) => {
     const badges = {
       ligar: [
@@ -69,8 +95,8 @@ export default function Home() {
     <main className="min-h-screen bg-[#050505] text-white flex flex-col items-center p-6 font-sans selection:bg-pink-500/20">
       
       <header className="flex flex-col items-center mb-10 mt-6 text-center">
-        <div className="bg-gradient-to-tr from-pink-500 to-violet-600 p-3 rounded-2xl shadow-[0_0_40px_rgba(236,72,153,0.3)] mb-4 rotate-2">
-          <span className="text-2xl font-bold italic">✍️</span>
+        <div className="relative w-20 h-20 mb-4 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(236,72,153,0.3)] rotate-2 border border-white/10">
+          <Image src="/icon.png" alt="Ghostwriter Logo" fill className="object-cover" priority />
         </div>
         <h1 className="text-5xl font-black tracking-tighter bg-gradient-to-b from-white to-zinc-500 bg-clip-text text-transparent italic">
           GHOSTWRITER
@@ -81,7 +107,26 @@ export default function Home() {
       </header>
 
       <div className="w-full max-w-md">
-        {!results ? (
+        {loading ? (
+          /* PANTALLA DE CARGA PAISA */
+          <div className="flex flex-col items-center justify-center py-20 animate-in fade-in duration-500">
+            <div className="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden mb-6 border border-zinc-800">
+              <div className="bg-gradient-to-r from-pink-500 via-violet-600 to-pink-500 h-full w-full animate-progress" />
+            </div>
+            <p className="text-zinc-400 font-black text-xs tracking-widest uppercase italic animate-pulse text-center px-4">
+              {loadingText}
+            </p>
+            <style jsx>{`
+              @keyframes progress {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
+              }
+              .animate-progress {
+                animation: progress 2s infinite linear;
+              }
+            `}</style>
+          </div>
+        ) : !results ? (
           <div className="space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
             <label className="group border-2 border-dashed border-zinc-800 bg-zinc-900/40 rounded-[3.5rem] h-72 flex flex-col items-center justify-center cursor-pointer hover:border-pink-500/40 transition-all overflow-hidden relative shadow-inner">
               {image ? (
@@ -100,26 +145,23 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-3">
               <button 
                 onClick={() => analyzeChat("ligar")} 
-                disabled={loading} 
-                className="w-full py-5 bg-white text-black rounded-[2.5rem] font-black text-xs tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-all shadow-xl disabled:opacity-50"
+                className="w-full py-5 bg-white text-black rounded-[2.5rem] font-black text-xs tracking-widest uppercase hover:scale-[1.02] active:scale-95 transition-all shadow-xl"
               >
-                {loading && activeMode === 'ligar' ? "Cocinando flow..." : "🔥 Modo Ligar"}
+                🔥 Modo Ligar
               </button>
 
               <div className="grid grid-cols-2 gap-3">
                 <button 
                   onClick={() => analyzeChat("salvar")} 
-                  disabled={loading}
-                  className="py-5 bg-zinc-900 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 transition-all disabled:opacity-50"
+                  className="py-5 bg-zinc-900 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 transition-all"
                 >
-                   {loading && activeMode === 'salvar' ? "Rescatando..." : "🆘 Salvar"}
+                   🆘 Salvar
                 </button>
                 <button 
                   onClick={() => analyzeChat("inteligente")} 
-                  disabled={loading}
-                  className="py-5 bg-zinc-900 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 transition-all disabled:opacity-50"
+                  className="py-5 bg-zinc-900 border border-zinc-800 rounded-[2.5rem] font-black text-[10px] tracking-widest uppercase hover:bg-zinc-800 transition-all"
                 >
-                   {loading && activeMode === 'inteligente' ? "Pensando..." : "🧠 Genio"}
+                   🧠 Genio
                 </button>
               </div>
             </div>
@@ -136,30 +178,17 @@ export default function Home() {
             {results.map((opt, i) => {
               const badge = getBadgeInfo(i);
               return (
-                <div 
-                  key={i} 
-                  className="bg-zinc-900/80 backdrop-blur-xl p-8 rounded-[3rem] border border-zinc-800 shadow-2xl relative group overflow-hidden"
-                >
+                <div key={i} className="bg-zinc-900/80 backdrop-blur-xl p-8 rounded-[3rem] border border-zinc-800 shadow-2xl relative group overflow-hidden">
                   <div className="flex justify-between items-center mb-6">
                     <span className={`text-[10px] font-black tracking-[0.3em] uppercase ${badge.color} ${badge.bg} px-4 py-2 rounded-full`}>
                       {badge.label}
                     </span>
-                    <div className="flex gap-1.5 opacity-30">
-                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
-                    </div>
                   </div>
-                  
-                  <p className="text-zinc-100 text-xl font-medium leading-[1.45] mb-8 italic">
-                    "{opt.texto}"
-                  </p>
-                  
+                  <p className="text-zinc-100 text-xl font-medium leading-[1.45] mb-8 italic">"{opt.texto}"</p>
                   <button 
                     onClick={() => copiarTexto(opt.texto, i)}
                     className={`w-full py-4 rounded-[1.8rem] text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 ${
-                      copiadoIdx === i 
-                      ? "bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)]" 
-                      : "bg-zinc-800 text-zinc-400 hover:bg-white hover:text-black active:scale-95"
+                      copiadoIdx === i ? "bg-green-500 text-white shadow-[0_0_20px_rgba(34,197,94,0.4)]" : "bg-zinc-800 text-zinc-400 hover:bg-white hover:text-black active:scale-95"
                     }`}
                   >
                     {copiadoIdx === i ? "Copiado!" : "Copiar respuesta"}
