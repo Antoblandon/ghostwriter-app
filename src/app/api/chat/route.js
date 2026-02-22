@@ -11,13 +11,15 @@ export async function POST(req) {
     const etiquetas = {
       ligar: ["Vibe", "Reto", "Interés"],
       salvar: ["Gancho", "Humor", "Reset"],
-      inteligente: ["Deep", "Data", "Flow"]
+      inteligente: ["Deep", "Data", "Flow"],
+      romper: ["Curiosidad", "Apertura", "Misterio"] // Nuevas etiquetas para romper el hielo
     };
 
     const prompts = {
       ligar: "Seducción nivel Dios, estilo paisa relajado. Tono coqueto, misterioso y seguro. Muestra interés pero sin regalarte (cero necesidad). Trátala como una reina pero retándola un poquito desde el humor. NO analices, entrega solo el mensaje.",
       salvar: "Resucitación de chat nivel experto. Cero intensidad, cero reclamos. Usa un apunte charro (gracioso), una observación absurda o un gancho de curiosidad que rompa el hielo de la nada. NO analices, entrega solo el mensaje.",
-      inteligente: "Modo 'nerd pero con flow'. Combina cultura general o datos curiosos con sabrosura callejera. Inteligencia atractiva y casual, sin sonar a Wikipedia. Tira el dato y devuélvele la pelota con una pregunta. NO des explicaciones largas."
+      inteligente: "Modo 'nerd pero con flow'. Combina cultura general o datos curiosos con sabrosura callejera. Inteligencia atractiva y casual, sin sonar a Wikipedia. Tira el dato y devuélvele la pelota con una pregunta. NO des explicaciones largas.",
+      romper: "Iniciador de conversación maestro. Analiza la imagen para encontrar un detalle (ropa, fondo, expresión) y crea una pregunta u observación que no sea el típico saludo. Debe ser intrigante, con mucha clase y que obligue a responder. Cero frases hechas."
     };
 
     const systemPrompt = `
@@ -37,7 +39,7 @@ export async function POST(req) {
       - (Para ligar): "¿Aparte de tener buenos gustos musicales, qué más sabes hacer para sorprender?"
       - (Para ligar): "Me trama tu energía. Se nota que eres un peligro, pero de los buenos. 😏"
       - (Para salvar): "Me imagino que te secuestraron los aliens, porque qué perdida. Si necesitas rescate, manda un 🛸."
-      - (Para salvar): "Me acabo de acordar de nuestro debate y sigo pensando que tienes pésimo gusto para la pizza. Tenemos que arreglar eso."
+      - (Para romper): "Iba a decirte algo, pero me distraje intentando descifrar si ese fondo es tu lugar favorito o solo tienes buen ojo para las fotos."
       - (Para inteligente): "Mera coincidencia, justo estaba leyendo sobre eso. Resulta que [dato cortito]. Pero contame pues, ¿de dónde sacaste esa teoría tan conspirativa?"
 
       ESTILO SELECCIONADO: ${prompts[mode]}

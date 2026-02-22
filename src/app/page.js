@@ -73,19 +73,24 @@ export default function Home() {
   const getBadgeInfo = (index) => {
     const badges = {
       ligar: [
-        { label: "Smooth 🔥", color: "text-pink-500", bg: "bg-pink-500/10" },
-        { label: "Directo ⚡", color: "text-orange-500", bg: "bg-orange-500/10" },
-        { label: "Playful ✨", color: "text-violet-500", bg: "bg-violet-500/10" }
+        { label: "Vibe ✨", color: "text-pink-500", bg: "bg-pink-500/10" },
+        { label: "Reto 🎯", color: "text-orange-500", bg: "bg-orange-500/10" },
+        { label: "Interés 😏", color: "text-violet-500", bg: "bg-violet-500/10" }
       ],
       salvar: [
-        { label: "Icebreaker 🧊", color: "text-blue-400", bg: "bg-blue-400/10" },
+        { label: "Gancho 🪝", color: "text-blue-400", bg: "bg-blue-400/10" },
         { label: "Humor 🎭", color: "text-yellow-400", bg: "bg-yellow-400/10" },
-        { label: "Clutch 🆘", color: "text-red-500", bg: "bg-red-500/10" }
+        { label: "Reset 🔄", color: "text-red-500", bg: "bg-red-500/10" }
       ],
       inteligente: [
         { label: "Deep 🧠", color: "text-emerald-400", bg: "bg-emerald-400/10" },
-        { label: "Analytical 💎", color: "text-cyan-400", bg: "bg-cyan-400/10" },
-        { label: "Sharp 🎯", color: "text-indigo-400", bg: "bg-indigo-400/10" }
+        { label: "Data 💎", color: "text-cyan-400", bg: "bg-cyan-400/10" },
+        { label: "Flow ⚡", color: "text-indigo-400", bg: "bg-indigo-400/10" }
+      ],
+      romper: [
+        { label: "Curiosidad 🤔", color: "text-amber-400", bg: "bg-amber-400/10" },
+        { label: "Apertura 🔓", color: "text-purple-400", bg: "bg-purple-400/10" },
+        { label: "Misterio 🕵️", color: "text-rose-400", bg: "bg-rose-400/10" }
       ]
     };
     return badges[activeMode]?.[index] || { label: "Opción", color: "text-zinc-500", bg: "bg-zinc-500/10" };
@@ -108,7 +113,6 @@ export default function Home() {
 
       <div className="w-full max-w-md">
         {loading ? (
-          /* PANTALLA DE CARGA PAISA */
           <div className="flex flex-col items-center justify-center py-20 animate-in fade-in duration-500">
             <div className="w-full bg-zinc-900 h-1.5 rounded-full overflow-hidden mb-6 border border-zinc-800">
               <div className="bg-gradient-to-r from-pink-500 via-violet-600 to-pink-500 h-full w-full animate-progress" />
@@ -164,6 +168,13 @@ export default function Home() {
                    🧠 Genio
                 </button>
               </div>
+
+              <button 
+                onClick={() => analyzeChat("romper")} 
+                className="w-full py-5 bg-gradient-to-r from-zinc-900 to-zinc-800 border border-zinc-700 text-zinc-300 rounded-[2.5rem] font-black text-xs tracking-widest uppercase hover:border-amber-500/50 transition-all shadow-lg flex items-center justify-center gap-2"
+              >
+                ❄️ Romper el Hielo
+              </button>
             </div>
           </div>
         ) : (
