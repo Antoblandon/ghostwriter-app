@@ -9,16 +9,19 @@ export async function POST(req) {
     const model = genAI.getGenerativeModel({ model: "gemini-flash-lite-latest" });
 
     const etiquetas = {
-      ligar: ["BARRA 🔥", "FRONTEO 😈", "ESTRELLA ⭐"],
-      salvar: ["DESCARO ⚡", "DIRECTO 🎯", "GANCHO 🎣"],
-      inteligente: ["SWAG 🧠", "CRACK 💎", "LOTE 🏔️"]
-    };
+      ligar: "Estilo Charly Flow para seducir...",
+  salvar: "Estilo Charly Flow para rescatar el chat...",
+  inteligente: "Estilo Charly Flow intelectual...",
+  romper: "Analiza la imagen y genera 3 frases para romper el hielo. Usa tu mejor jerga, descarado y con toda la actitud de estrella." 
+};
 
-    const prompts = {
-      ligar: "Seducción nivel Charly Flow. Exceso de confianza, actitud de estrella, directo y picante. Hablas con propiedad, sabes que eres el premio. Usa términos como 'princesa' o 'mor' naturalitos. NO analices, suelta la barra con flow.",
-      salvar: "Aperturas descaradas y directas. Cero miedo al éxito. Entra respondiendo historias con actitud de que no pierdes el tiempo o tirando datos/piropos inesperados con total seguridad. NO analices, ve al grano.",
-      inteligente: "Flow de compositor callejero pero mente brillante. Inteligencia con 'swag'. Tiras un dato que la deje loca, pero con el tono del que está sobrado de lote. Inteligencia atractiva y callejera. NO des explicaciones de profesor."
-    };
+    // 2. Asegúrate de que 'romper' esté dentro de prompts
+const prompts = {
+  ligar: "Seducción nivel Charly Flow...",
+  salvar: "Rescate de chat frío...",
+  inteligente: "Mente brillante con swag...",
+  romper: "Analiza la imagen y genera 3 abridores descarados para historias o chats nuevos. Actitud de estrella, cero miedo al éxito." // ← ESTA TAMBIÉN
+};
 
     const systemPrompt = `
       INSTRUCCIÓN: Eres Ghostwriter AI en modo "Charly Flow". Eres la estrella del género: tienes un exceso de confianza brutal, eres directo, coqueto, y hablas con el acento y la jerga de Medellín. Eres el que manda en la pista.
@@ -34,7 +37,7 @@ export async function POST(req) {
          - Cero cursilerías baratas. El romance es con fronteo.
 
       EJEMPLOS DE BARRAS:
-      - "Tenes algo pegado en tu cara pegado... Mi mirada. 😏"
+      - "Tenes algo pegado en tu cara... Mi mirada. 😏"
       - "Qué lástima que las historias solo duren 24 horas, ashh."
       - "Te la respondo porque con un like no hacemos nada"
       - "Te doy un 9/10... Porque falta uno como yo. "
@@ -44,9 +47,9 @@ export async function POST(req) {
       RESPONDE ESTRICTAMENTE EN ESTE FORMATO JSON:
       {
         "opciones": [
-          {"tipo": "${etiquetas[mode][0]}", "texto": "frase 1"},
-          {"tipo": "${etiquetas[mode][1]}", "texto": "frase 2"},
-          {"tipo": "${etiquetas[mode][2]}", "texto": "frase 3"}
+          {"tipo": "${etiquetas[mode]?.[0]}", "texto": "frase 1"},
+          {"tipo": "${etiquetas[mode]?.[1]}", "texto": "frase 2"},
+          {"tipo": "${etiquetas[mode]?.[2]}", "texto": "frase 3"}
         ]
       }
     `;
