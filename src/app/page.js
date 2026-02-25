@@ -14,6 +14,7 @@ export default function Home() {
   const [canRequest, setCanRequest] = useState(true);
   const [timeLeft, setTimeLeft] = useState(0);
 
+  // Aqui manejamos la logica de las frases para la pantalla de carga
   const frasesPaisas = [
     "Analizando el visaje...",
     "Buscando la parla exacta, mijo...",
@@ -39,6 +40,7 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [loading]);
 
+  // Variable que maneja la carga de las imagenes y el analisis de las mismas 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -64,7 +66,7 @@ export default function Home() {
         setResults(data.opciones);
         window.scrollTo({ top: 0, behavior: 'smooth' });
         
-        // ACTIVAR EL COOLDOWN DE 60 SEGUNDOS
+        // Logica que maneja el cooldown de los 60 segundos por cada requerimiento que realice el usuario
         setCanRequest(false);
         setTimeLeft(60);
         const timer = setInterval(() => {
@@ -84,12 +86,14 @@ export default function Home() {
     setLoading(false);
   };
 
+  // esta parte maneja la logica que extrae el texto y lo indexa en las respuestas finales 
   const copiarTexto = (texto, index) => {
     navigator.clipboard.writeText(texto);
     setCopiadoIdx(index);
     setTimeout(() => setCopiadoIdx(null), 2000);
   };
 
+  // logica que le da el titulo a cada resultado (notar que son 3 resultados)
   const getBadgeInfo = (index) => {
     const badges = {
       ligar: [
@@ -172,7 +176,7 @@ export default function Home() {
                 onClick={() => analyzeChat("ligar")} 
                 className={`w-full py-5 rounded-[2.5rem] font-black text-xs tracking-widest uppercase transition-all shadow-xl ${canRequest ? "bg-white text-black hover:scale-[1.02] active:scale-95" : "bg-zinc-800 text-zinc-500 opacity-50 cursor-not-allowed"}`}
               >
-                {canRequest ? "🔥 Modo Ligar" : `ESPERA (${timeLeft}s)`}
+                {canRequest ? "🔥 Modo Conspire" : `ESPERA (${timeLeft}s)`}
               </button>
 
               <div className="grid grid-cols-2 gap-3">
@@ -236,7 +240,7 @@ export default function Home() {
       </div>
 
       <footer className="mt-auto py-10 text-[9px] text-zinc-800 font-bold tracking-[0.6em] uppercase">
-        © 2026 ANTO.DEV V 3.0
+        © 2026 ANTO.DEV V 3.1
       </footer>
     </main>
   );
